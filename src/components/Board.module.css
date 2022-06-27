@@ -1,0 +1,18 @@
+.board {
+  display: grid;
+  width: clamp(300px, 40vw, 600px);
+  aspect-ratio: 1/1;
+  max-width: 90%;
+  margin: 3rem auto;
+  max-height: 600px;
+  height: clamp(300px, 40vw, 600px);
+  padding: 5px;
+  grid-gap: 1%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  background-color: grey;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/wood.jpg");
+  box-shadow: -20px 20px 50px black;
+}
