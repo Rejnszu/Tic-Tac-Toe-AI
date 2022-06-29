@@ -1,7 +1,7 @@
 import React from "react";
 import Board from "./components/Board";
 import Square from "./components/Square";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import TicContext from "./store/tic-context";
 
 const winningCondition = [
@@ -15,11 +15,10 @@ const winningCondition = [
   [2, 4, 6],
 ];
 let gameStatus;
-let gameIsFinished = false;
 
 function App() {
   const context = useContext(TicContext);
-
+  const [gameIsFinished, setGameIsFinished] = useState(false);
   function resetGame() {
     context.scoreBoardHandler([
       ["", false],
@@ -33,7 +32,7 @@ function App() {
       ["", false],
     ]);
     context.playerStatusHandlerX();
-    gameIsFinished = false;
+    setGameIsFinished(false);
   }
 
   function checkWinner() {
@@ -47,14 +46,14 @@ function App() {
       ) {
         gameStatus =
           "Player " + context.scoreBoard[winningCondition[i][0]][0] + " won";
-        gameIsFinished = true;
+        setGameIsFinished(true);
       }
     }
   }
 
   if (context.scoreBoard.every((score) => score[0] !== "") && !gameIsFinished) {
     gameStatus = "Tie";
-    gameIsFinished = true;
+    setGameIsFinished(true);
   }
 
   return (
@@ -74,7 +73,6 @@ function App() {
               count={i}
               value={button[0]}
               key={i}
-              playerStatus={context.playerStatus}
               gameIsFinished={gameIsFinished}
               checkWinner={checkWinner}
             />

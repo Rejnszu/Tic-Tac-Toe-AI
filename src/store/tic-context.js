@@ -2,8 +2,8 @@ import React from "react";
 
 const TicContext = React.createContext({
   scoreBoard: [],
-  scoreBoardHandler: () => {},
   playerStatus: "",
+  scoreBoardHandler: () => {},
   playerStatusHandlerX: () => {},
   playerStatusHandlerO: () => {},
 });

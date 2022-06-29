@@ -14,7 +14,7 @@ let scoreBoard = [
   ["", false],
   ["", false],
 ];
-
+let randomNumber;
 export default function Square(props) {
   const context = useContext(TicContext);
 
@@ -22,39 +22,19 @@ export default function Square(props) {
     computerTurn = true;
     if (!props.isClicked) {
       scoreBoard[props.count][1] = true;
-      scoreBoard[props.count][0] = props.playerStatus;
+      scoreBoard[props.count][0] = context.playerStatus;
       context.scoreBoardHandler(scoreBoard);
+      props.checkWinner();
 
-      if (props.playerStatus === "X" && !props.gameIsFinished) {
+      if (context.playerStatus === "X" && !props.gameIsFinished) {
         setTimeout(() => {
           AutoPlay();
         }, 1);
-        console.log(props.playerStatus);
+
         context.playerStatusHandlerO();
-      } else {
-        return;
       }
     }
 
-    props.checkWinner();
-
-    setTimeout(() => context.playerStatusHandlerX(), 800);
-  }
-
-  function AutoPlay() {
-    let randomNumber = Math.round(Math.random() * (scoreBoard.length - 1));
-    while (scoreBoard[randomNumber][0] !== "") {
-      randomNumber = Math.round(Math.random() * (scoreBoard.length - 1));
-    }
-
-    scoreBoard[randomNumber][0] = "O";
-    scoreBoard[randomNumber][1] = true;
-
-    props.checkWinner();
-    computerTurn = false;
-  }
-
-  useEffect(() => {
     if (props.gameIsFinished) {
       scoreBoard = [
         ["", false],
@@ -68,7 +48,34 @@ export default function Square(props) {
         ["", false],
       ];
     }
-  }, [props.gameIsFinished, props.playerStatus]);
+    setTimeout(() => context.playerStatusHandlerX(), 800);
+  }
+
+  function AutoPlay() {
+    do {
+      randomNumber = Math.round(Math.random() * (scoreBoard.length - 1));
+    } while (scoreBoard[randomNumber][0] !== "");
+
+    scoreBoard[randomNumber][0] = "O";
+    scoreBoard[randomNumber][1] = true;
+
+    props.checkWinner();
+    computerTurn = false;
+  }
+
+  useEffect(() => {
+    scoreBoard = [
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+      ["", false],
+    ];
+  }, [props.gameIsFinished]);
 
   return (
     <button
@@ -81,8 +88,8 @@ export default function Square(props) {
       {props.value}
       {!props.isClicked &&
         !props.gameIsFinished &&
-        props.playerStatus !== "O" && (
-          <div className={styles.hint}>{props.playerStatus}</div>
+        context.playerStatus !== "O" && (
+          <div className={styles.hint}>{context.playerStatus}</div>
         )}
     </button>
   );
